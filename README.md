@@ -20,123 +20,71 @@ dependencies {
 	        implementation 'com.github.leoncydsilva:SearchableSpinner:$latestSearchableSpinnerVesion'
 	}
 ```
-##### Latest MaterialSearchVeiw version is [![](https://jitpack.io/v/leoncydsilva/SearchableSpinner.svg)](https://jitpack.io/#leoncydsilva/SearchableSpinner)
+##### Latest SearchableSpinner version is [![](https://jitpack.io/v/leoncydsilva/SearchableSpinner.svg)](https://jitpack.io/#leoncydsilva/SearchableSpinner)
 
 ## Usage Kotlin
 
 ```kotlin
- val materialSearchView = MaterialSearchView(this)
-         
-    //Optional Parameters
-     materialSearchView.setBackButtonTint(R.color.colorAccent)
-     materialSearchView.animationDuration = 1000
-     materialSearchView.searchHint = "Search"
-     materialSearchView.backButtonDrawable = getDrawable(R.drawable.ic_arrow_back)
-     materialSearchView.clearSearchOnDismiss = false
-     materialSearchView.showKeyBoardDefault = false
-
-     materialSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(this@KotlinActivity, query, Toast.LENGTH_SHORT).show()
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Toast.makeText(this@KotlinActivity, newText, Toast.LENGTH_SHORT).show()
-                return false
-            }
-
-        })
+val searchableSpinner = SearchableSpinner(this)
 ```
 ```
-        //Sample usage with toolbar menu
-        val menu = materialToolbar.menu
-        menu.findItem(R.id.searchMenuIcon).setOnMenuItemClickListener {
-            Toast.makeText(this, "Showing Search from ToolbarMenu", Toast.LENGTH_LONG).show()
-
-            //The method call where magic happens. 
-            materialSearchView.show(findViewById(R.id.searchMenuIcon));false
+		//Optional Parameters
+        searchableSpinner.windowTitle = "SEARCHABLE SPINNER"
+        searchableSpinner.onItemSelectListener = object : OnItemSelectListener {
+            override fun setOnItemSelectListener(position: Int, selectedString: String) {
+                    textInputSpinner.editText?.setText(selectedString)
         }
-```
-```
-        //Sample usage with ImageView
-        imageViewSearch.setOnClickListener {
-            Toast.makeText(this, "Showing Search from ImageView", Toast.LENGTH_LONG).show()
 
-            //The method call where magic happens.
-            materialSearchView.show(it)
+        //Setting Visibility for views in SearchableSpinner
+        searchableSpinner.searchViewVisibility = SearchableSpinner.SpinnerView.GONE
+        searchableSpinner.negativeButtonVisibility = SearchableSpinner.SpinnerView.GONE
+        searchableSpinner.windowTitleVisibility = SearchableSpinner.SpinnerView.GONE
+```
+```
+		//Setting up list items for spinner
+        val androidVersionList = arrayListOf(
+            "Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice Cream Sandwich",
+            "Jelly Bean", "KitKat", "Lollipop", "Marshmallow", "Nougat", "10"
+        )
+
+        searchableSpinner.setSpinnerListItems(androidVersionList)
+```
+```
+		//Showing searchable spinner
+        textInputSpinner.editText?.keyListener = null
+        textInputSpinner.editText?.setOnClickListener {
+            searchableSpinner.show()
         }
 ```
 
 ## Usage Java
 
 ```
-MaterialToolbar materialToolbar = findViewById(R.id.materialToolbar);
-        ImageView imageView = findViewById(R.id.imageViewSearch);
+ final SearchableSpinner searchableSpinner = new SearchableSpinner(this);
+ ```
+ ```
+		//Optional Parameters
+        searchableSpinner.setWindowTitle("SEARCHABLE SPINNER");
 
-final MaterialSearchView materialSearchView = new MaterialSearchView(this);
-     
-   //Optional Parameters
-    materialSearchView.setBackButtonTint(R.color.colorAccent);
-    materialSearchView.setAnimationDuration(1000);
-    materialSearchView.setSearchHint("Search");
-    materialSearchView.setBackButtonDrawable(getDrawable(R.drawable.ic_arrow_back));
-    materialSearchView.setClearSearchOnDismiss(false);
-    materialSearchView.setShowKeyBoardDefault(false);
-    materialSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(JavaActivity.this, query, Toast.LENGTH_SHORT).show();
-                return false;
-            }
+		//Setting up list items for spinner
+        ArrayList<String> androidVersionList = new ArrayList<>(Arrays.asList("Cupcake", 			"Donut", "Eclair","Froyo", "Gingerbread", "Honeycomb", "Ice Cream Sandwich", "Jelly 		Bean", "KitKat", "Lollipop", "Marshmallow", "Nougat", "10"));
+        searchableSpinner.setSpinnerListItems(androidVersionList);
 
+        searchableSpinner.setOnItemSelectListener(new OnItemSelectListener() {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                Toast.makeText(JavaActivity.this, newText, Toast.LENGTH_SHORT).show();
-                return false;
-            }
+            public void setOnItemSelectListener(int position, @NotNull String selectedString){
+                    textInputSpinner.getEditText().setText(selectedString);
         });
 ```
 ```
-       //Simple usage with toolbar menu
-        Menu menu = materialToolbar.getMenu();
-        menu.findItem(R.id.searchMenuIcon).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(JavaActivity.this, "Showing Search from ToolbarMenu", Toast.LENGTH_LONG).show();
-                
-                //The method call where magic happens.
-                materialSearchView.show(findViewById(R.id.searchMenuIcon));
-                return false;
-            }
-        });
-```
-```
-
-        //Sample usage with ImageView
-        imageView.setOnClickListener(new View.OnClickListener() {
+		//Showing searchable spinner
+        textInputSpinner.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(JavaActivity.this, "Showing Search from ImageView", Toast.LENGTH_LONG).show();
-
-                //The method call where magic happens.
-                materialSearchView.show(v);
+                searchableSpinner.show();
             }
         });
-    }
 ```
 
-## Public Methods
-
-#### Kotlin and Java
-```java
-setBackButtonTint(@ColorRes Int color);
-setAnimationDuration(Int animationDuration);
-setSearchHint(String string);
-setBackButtonDrawable(Drawable drawable);
-setClearSearchOnDismiss(Boolean isClearSearchNeeded);
-setShowKeyBoardDefault(Bolean showKeyboardDefalut);
-setOnQueryTextListener(SearchView.OnQueryTextListener listener);
-```
 ## License
 [MIT](https://github.com/leoncydsilva/SearchableSpinner/blob/master/LICENSE)

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -57,7 +58,7 @@ class SearchableSpinner(private val context: Context) : LifecycleObserver {
             field = colorInt
         }
 
-    var animationDuration: Int = 600
+    var animationDuration: Int = 420
     var showKeyboardByDefault: Boolean = true
     var spinnerCancelable: Boolean = false
     var windowTitle: String? = null
@@ -68,6 +69,8 @@ class SearchableSpinner(private val context: Context) : LifecycleObserver {
     var negativeButtonVisibility: SpinnerView = SpinnerView.VISIBLE
     var windowTitleVisibility: SpinnerView = SpinnerView.GONE
     var searchViewVisibility: SpinnerView = SpinnerView.VISIBLE
+    var selectedItemPosition: Int = -1
+    var selectedItem: String? = null
 
     @Suppress("unused")
     enum class SpinnerView(val visibility: Int) {
@@ -111,6 +114,8 @@ class SearchableSpinner(private val context: Context) : LifecycleObserver {
         recyclerAdapter =
             SpinnerRecyclerAdapter(context, spinnerList, object : OnItemSelectListener {
                 override fun setOnItemSelectListener(position: Int, selectedString: String) {
+                    selectedItemPosition = position
+                    selectedItem = selectedString
                     if (dismissSpinnerOnItemClick) dismiss()
                     if (::onItemSelectListener.isInitialized) onItemSelectListener.setOnItemSelectListener(
                         position,
@@ -162,6 +167,12 @@ class SearchableSpinner(private val context: Context) : LifecycleObserver {
                 )
             }
 
+        dialog.setOnKeyListener { _, keyCode, event ->
+            if (event?.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                this@SearchableSpinner.dismiss()
+            }
+            false
+        }
 
         //init WindowTittle
         if (windowTitle != null || windowTitleVisibility.visibility == SearchView.VISIBLE) {

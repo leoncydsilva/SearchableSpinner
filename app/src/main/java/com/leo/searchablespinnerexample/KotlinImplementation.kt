@@ -1,6 +1,7 @@
 package com.leo.searchablespinnerexample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.leo.searchablespinner.SearchableSpinner
 import com.leo.searchablespinner.interfaces.OnItemSelectListener
@@ -16,6 +17,11 @@ class KotlinImplementation : AppCompatActivity() {
         searchableSpinner.windowTitle = "SEARCHABLE SPINNER"
         searchableSpinner.onItemSelectListener = object : OnItemSelectListener {
             override fun setOnItemSelectListener(position: Int, selectedString: String) {
+                Toast.makeText(
+                    this@KotlinImplementation,
+                    "${searchableSpinner.selectedItem}  ${searchableSpinner.selectedItemPosition}",
+                    Toast.LENGTH_SHORT
+                ).show()
                 if (isTextInputLayoutClicked)
                     textInputSpinner.editText?.setText(selectedString)
                 else

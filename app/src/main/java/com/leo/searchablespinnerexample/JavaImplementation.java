@@ -3,6 +3,7 @@ package com.leo.searchablespinnerexample;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,6 +48,7 @@ public class JavaImplementation extends AppCompatActivity {
         searchableSpinner.setOnItemSelectListener(new OnItemSelectListener() {
             @Override
             public void setOnItemSelectListener(int position, @NotNull String selectedString) {
+                Toast.makeText(JavaImplementation.this, searchableSpinner.getSelectedItem()+" "+ searchableSpinner.getSelectedItemPosition(), Toast.LENGTH_SHORT).show();
                 if (isTextInputLayoutClicked)
                     textInputSpinner.getEditText().setText(selectedString);
                 else

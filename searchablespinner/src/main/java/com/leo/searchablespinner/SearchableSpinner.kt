@@ -25,7 +25,6 @@ import com.leo.searchablespinner.utils.CircularReveal
 import com.leo.searchablespinner.utils.SpinnerRecyclerAdapter
 import kotlinx.android.synthetic.main.searchable_spinner.view.*
 
-
 @Suppress("MemberVisibilityCanBePrivate", "RedundantSetter", "RedundantGetter")
 class SearchableSpinner(private val context: Context) : LifecycleObserver {
     lateinit var onItemSelectListener: OnItemSelectListener
@@ -93,10 +92,10 @@ class SearchableSpinner(private val context: Context) : LifecycleObserver {
                     .setCancelable(spinnerCancelable || negativeButtonVisibility != SpinnerView.VISIBLE)
 
             dialog = dialogBuilder.create()
+            dialog.initAlertDialogWindow()
             dialog.initView()
             initDialogColorScheme()
             dialog.show()
-            dialog.initAlertDialogWindow()
         }
     }
 
@@ -151,6 +150,7 @@ class SearchableSpinner(private val context: Context) : LifecycleObserver {
 
     private fun AlertDialog.initView() {
         setOnShowListener {
+            toggleKeyBoard(true)
             CircularReveal.startReveal(true, this, object : OnAnimationEnd {
                 override fun onAnimationEndListener(isRevealed: Boolean) {
                     if (isRevealed) {
@@ -238,11 +238,11 @@ class SearchableSpinner(private val context: Context) : LifecycleObserver {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         if (showKeyboardByDefault && showKeyBoard) {
             dialogView.searchView.post {
-                dialogView.searchView.requestFocus()
-                imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 1)
+                if(dialogView.searchView.requestFocus())
+                    imm?.showSoftInput(dialogView.searchView, InputMethodManager.SHOW_IMPLICIT);
             }
         } else {
-            imm?.toggleSoftInput(0, 0)
+                imm?.hideSoftInputFromWindow(dialogView.windowToken, 0);
         }
     }
 }

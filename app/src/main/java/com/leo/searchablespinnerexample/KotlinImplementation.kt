@@ -14,6 +14,7 @@ class KotlinImplementation : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.searchable_spinner_implementation)
         val searchableSpinner = SearchableSpinner(this)
+        searchableSpinner.showKeyboardByDefault = false
         searchableSpinner.windowTitle = "SEARCHABLE SPINNER"
         searchableSpinner.onItemSelectListener = object : OnItemSelectListener {
             override fun setOnItemSelectListener(position: Int, selectedString: String) {
